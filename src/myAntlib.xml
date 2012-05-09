@@ -1,0 +1,4 @@
+<antlib>
+	<taskdef name="mjavac" classname="org.msf.tools.ant.taskdefs.MJavac"
+		onerror="ignore" />
+</antlib>

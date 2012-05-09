@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="test" basedir="." default="test">
+	<!-- 引入定义配置文件  需要把myAutoAnt.jar和ant-contrib-1.0b3.jar以及org.eclipse.jdt.core_3.7.3.v20120119-1537.jar包放入ant/lib目录下
+		把org.eclipse.jdt.core_3.7.3.v20120119-1537.jar包里的jdtCompilerAdapter.jar包解压出来也放在ant的lib下
+	-->
+	<taskdef resource="net/sf/antcontrib/antlib.xml" />
+	<taskdef resource="myAntlib.xml" />
+
+	<!-- ================================= 
+          target: test mjavac          
+         ================================= -->
+	<target name="test" depends="init">
+		<echo message="执行....." />
+		<!-- 
+			workspace:工程所在根目录 eg:E:/eclipse3.7Work(结尾不能带/)
+			projectname:所要编译的工程名 eg:/test(以/开头+工程名)
+			destdir:编译后的classes存放目录
+			destlib:编译后的jar包存放目录
+			其他与javac的选项一致,不过不需要设置classpath,只需要确保所编译的工程下有.classpath,.project两个文件
+			注意：所有工程的lib包不能直接用eclipse的变量方式，必须直接导入包到lib下
+		-->
+		<property name="mjavac_srcs" value="value" />
+		<property name="mjavac_libs" value="value" />
+		<mjavac workspace="D:/m_workspace" projectname="/${p_nm}" destdir="${dest_class}" destlib="${dest_lib}" compiler="${e_compiler}" includeantruntime="false" target="1.6" source="1.6" nowarn="true" encoding="utf-8" failonerror="true" />
+		<!-- 打印输出编译信息 -->
+		<for list="${mjavac_srcs}" param="exparam">
+			<sequential>
+				<echo message="src:@{exparam}" />
+			</sequential>
+		</for>
+		<for list="${mjavac_libs}" param="exparam">
+			<sequential>
+				<echo message="lib:@{exparam}" />
+			</sequential>
+		</for>
+	</target>
+
+	<!-- ================================= 
+          target: init              
+         ================================= -->
+	<target name="init" description="--> init">
+		<echo message="初始化..." />
+		<!-- 使用eclipse的编译器 -->
+		<property name="p_nm" value="zkdemo" />
+		<property name="e_compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<property name="dest_class" value="D:\apache-tomcat-6.0.35\webapps\${p_nm}\WEB-INF\classes" />
+		<property name="dest_lib" value="D:\apache-tomcat-6.0.35\webapps\${p_nm}\WEB-INF\lib" />
+
+		<delete dir="${dest_class}" />
+		<delete dir="${dest_lib}" />
+		<!-- 创建编译后的classes存放目录 -->
+		<mkdir dir="${dest_class}" />
+		<!-- 创建编译后的jar包存放目录 -->
+		<mkdir dir="${dest_lib}" />
+	</target>
+
+</project>
